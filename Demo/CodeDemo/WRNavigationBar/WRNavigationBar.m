@@ -13,16 +13,23 @@
 
 @implementation WRNavigationBar
 
-+ (BOOL)isIphoneX {
++ (BOOL)isIphoneX{
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
     if ([platform isEqualToString:@"i386"] || [platform isEqualToString:@"x86_64"]) {
-        // judgment by height when in simulators
-        return (CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(375, 812)) ||
-                CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(812, 375)));
+        UIWindow *keyWindow = [[[UIApplication sharedApplication] delegate] window];
+        // 获取底部安全区域高度，iPhone X 竖屏下为 34.0，横屏下为 21.0，其他类型设备都为 0
+        BOOL haveSafeInset;
+        if (@available(iOS 11.0, *)) {
+            CGFloat bottomSafeInset = keyWindow.safeAreaInsets.bottom;
+            haveSafeInset = (bottomSafeInset == 34.0f || bottomSafeInset == 21.0f);
+        }else{
+            haveSafeInset = NO;
+        }
+        return haveSafeInset;
     }
-    BOOL isIPhoneX = [platform isEqualToString:@"iPhone10,3"] || [platform isEqualToString:@"iPhone10,6"];
+    BOOL isIPhoneX = [platform isEqualToString:@"iPhone10,3"] || [platform isEqualToString:@"iPhone10,6"] || [platform isEqualToString:@"iPhone11,8"] || [platform isEqualToString:@"iPhone11,2"] || [platform isEqualToString:@"iPhone11,6"] || [platform isEqualToString:@"iPhone11,4"];
     return isIPhoneX;
 }
 + (CGFloat)navBarBottom {
