@@ -1,3 +1,10 @@
+### 在WRNavigationBar库的基础上进行修改
+* 解决了刘海屏页面遮挡问题
+
+###### 集成
+pod 'WRNavigationBar', :git => 'https://github.com/xnxy/WRNavigationBar.git', :branch => 'master'
+
+------
 ![image](https://github.com/wangrui460/WRNavigationBar/raw/master/screenshots/WRNavigationBar.png)
 
 <p align="center">
